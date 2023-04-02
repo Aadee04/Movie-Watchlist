@@ -20,79 +20,6 @@
 
 <StackPane fx:id="stackMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="search.moviewatchlist.MainController">
    <children>
-      <BorderPane fx:id="loginPane" prefHeight="200.0" prefWidth="200.0">
-         <right>
-            <VBox alignment="CENTER" prefHeight="806.0" prefWidth="673.0" style="-fx-background-color: #0D47A1;" BorderPane.alignment="CENTER">
-               <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="113.0" prefWidth="500.0" text="JAR MOVIES" textFill="WHITE">
-                     <font>
-                        <Font name="Nonchalance Bold" size="48.0" />
-                     </font>
-                  </Label>
-                  <VBox prefHeight="339.0" prefWidth="936.0">
-                     <children>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="207.0" text="Username" textAlignment="CENTER" textFill="WHITE">
-                                 <font>
-                                    <Font name="Kohinoor Bangla" size="24.0" />
-                                 </font>
-                              </Label>
-                              <TextField alignment="CENTER" prefHeight="26.0" prefWidth="271.0" />
-                           </children>
-                        </HBox>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="250.0">
-                           <children>
-                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" text="Password" textFill="WHITE">
-                                 <font>
-                                    <Font name="Kohinoor Bangla" size="24.0" />
-                                 </font>
-                              </Label>
-                              <TextField prefHeight="26.0" prefWidth="280.0" />
-                           </children>
-                        </HBox>
-                        <AnchorPane prefHeight="139.0" prefWidth="769.0" VBox.vgrow="NEVER">
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
-                           <children>
-                              <Button fx:id="signinButton" alignment="CENTER" contentDisplay="CENTER" layoutX="131.0" layoutY="51.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#showSearchResult" prefHeight="38.0" prefWidth="444.0" style="-fx-background-radius: 10;" text="Sign In">
-                                 <font>
-                                    <Font name="Bangla Sangam MN" size="24.0" />
-                                 </font>
-                                 <padding>
-                                    <Insets bottom="2.0" />
-                                 </padding>
-                              </Button>
-                           </children>
-                        </AnchorPane>
-                     </children>
-                  </VBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                     <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="235.0" text="Don't have an account?" textFill="WHITE">
-                           <font>
-                              <Font name="Kohinoor Bangla" size="19.0" />
-                           </font>
-                        </Label>
-                        <Button fx:id="loginSignupButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showSignUp" prefHeight="36.0" prefWidth="178.0" style="-fx-background-radius: 10px;" text="Sign Up" textAlignment="CENTER">
-                           <font>
-                              <Font name="Bangla Sangam MN" size="18.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-         </right>
-         <left>
-            <ImageView fitHeight="806.0" fitWidth="623.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
-               <image>
-                  <Image url="@../../images/login-image.jpeg" />
-               </image>
-            </ImageView>
-         </left>
-      </BorderPane>
       <BorderPane fx:id="signUpPane" layoutX="7.0" layoutY="7.0" prefHeight="809.0" prefWidth="1261.0">
          <left>
             <VBox alignment="CENTER" prefHeight="809.0" prefWidth="694.0" spacing="60.0" style="-fx-background-color: #0D47A1;" BorderPane.alignment="CENTER">
@@ -167,17 +94,93 @@
             </ImageView>
          </right>
       </BorderPane>
+      <BorderPane fx:id="loginPane" prefHeight="200.0" prefWidth="200.0">
+         <right>
+            <VBox alignment="CENTER" prefHeight="806.0" prefWidth="673.0" style="-fx-background-color: #0D47A1;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="113.0" prefWidth="500.0" text="JAR MOVIES" textFill="WHITE">
+                     <font>
+                        <Font name="Nonchalance Bold" size="48.0" />
+                     </font>
+                  </Label>
+                  <VBox prefHeight="339.0" prefWidth="936.0">
+                     <children>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <Label alignment="CENTER" contentDisplay="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="207.0" text="Username" textAlignment="CENTER" textFill="WHITE">
+                                 <font>
+                                    <Font name="Kohinoor Bangla" size="24.0" />
+                                 </font>
+                              </Label>
+                              <TextField alignment="CENTER" prefHeight="26.0" prefWidth="271.0" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="250.0">
+                           <children>
+                              <Label alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="200.0" text="Password" textFill="WHITE">
+                                 <font>
+                                    <Font name="Kohinoor Bangla" size="24.0" />
+                                 </font>
+                              </Label>
+                              <TextField prefHeight="26.0" prefWidth="280.0" />
+                           </children>
+                        </HBox>
+                        <AnchorPane prefHeight="139.0" prefWidth="769.0" VBox.vgrow="NEVER">
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <children>
+                              <Button fx:id="signinButton" alignment="CENTER" contentDisplay="CENTER" layoutX="131.0" layoutY="51.0" maxHeight="-Infinity" maxWidth="-Infinity" mnemonicParsing="false" onAction="#showSearchResult" prefHeight="38.0" prefWidth="444.0" style="-fx-background-radius: 10;" text="Sign In">
+                                 <font>
+                                    <Font name="Bangla Sangam MN" size="24.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets bottom="2.0" />
+                                 </padding>
+                              </Button>
+                           </children>
+                        </AnchorPane>
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="19.0" prefWidth="235.0" text="Don't have an account?" textFill="WHITE">
+                           <font>
+                              <Font name="Kohinoor Bangla" size="19.0" />
+                           </font>
+                        </Label>
+                        <Button fx:id="loginSignupButton" alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#showSignUp" prefHeight="36.0" prefWidth="178.0" style="-fx-background-radius: 10px;" text="Sign Up" textAlignment="CENTER">
+                           <font>
+                              <Font name="Bangla Sangam MN" size="18.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </right>
+         <left>
+            <ImageView fitHeight="806.0" fitWidth="623.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER">
+               <image>
+                  <Image url="@../../images/login-image.jpeg" />
+               </image>
+            </ImageView>
+         </left>
+      </BorderPane>
       <SplitPane fx:id="searchResultPane" dividerPositions="0.6831103678929766" prefHeight="160.0" prefWidth="200.0">
         <items>
           <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="429.0" prefWidth="434.0">
                <children>
                   <ListView fx:id="movieList" fixedCellSize="120.0" layoutX="-16.0" layoutY="91.0" prefHeight="707.0" prefWidth="884.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="91.0" />
-                  <Button fx:id="resultsSearchButton" layoutX="658.0" layoutY="26.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="103.0" text="SEARCH">
+                  <Button fx:id="resultsSearchButton" layoutX="658.0" layoutY="26.0" mnemonicParsing="false" onAction="#testing" prefHeight="39.0" prefWidth="103.0" text="SEARCH">
                      <font>
                         <Font size="18.0" />
                      </font>
                   </Button>
-                  <TextField fx:id="resultsSearch" layoutX="53.0" layoutY="31.0" prefHeight="26.0" prefWidth="560.0" />
+                  <TextField fx:id="resultsSearch" layoutX="60.0" layoutY="26.0" prefHeight="39.0" prefWidth="580.0" promptText="Enter a Movie or Television Show">
+                     <font>
+                        <Font size="18.0" />
+                     </font></TextField>
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
