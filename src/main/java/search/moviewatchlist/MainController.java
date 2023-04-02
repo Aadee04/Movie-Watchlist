@@ -69,74 +69,93 @@ public class MainController {
         stackMain.getChildren().clear();
         stackMain.getChildren().add(searchResultPane);
     }
-
+    @FXML
     public void testing() throws IOException, ParseException {
         String searchBarText = (resultsSearch.getText()).trim();
 
+        if(searchBarText.isEmpty()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Entry");
+            alert.setHeaderText("Search for Something!");
+            alert.setContentText("Enter a Movie Title or Television Show Name in the search box");
+            alert.showAndWait();
+        }
 
+        else{
+            searchBarText = searchBarText.replace(" ","%20");
 
-        searchBarText = searchBarText.replace(" ","%20");
+            String search_link = search_API_link.replace("search_query",searchBarText);
 
-        String search_link = search_API_link.replace("search_query",searchBarText);
+            URL url = new URL(search_link);
 
-        URL url = new URL(search_link);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.connect();
 
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.connect();
+            int responseCode = conn.getResponseCode();
 
-        int responseCode = conn.getResponseCode();
-
-        if (responseCode != 200) {
-            System.out.println("Error");
-        } else {
-            StringBuilder informationString = new StringBuilder();
-            Scanner scanner = new Scanner(url.openStream());
-
-            while (scanner.hasNext()) {
-                informationString.append(scanner.nextLine());
+            if (responseCode != 200) {
+                System.out.println("Error");
             }
-            //Close the scanner
-            scanner.close();
+            else {
+                StringBuilder informationString = new StringBuilder();
+                Scanner scanner = new Scanner(url.openStream());
 
-            String results = String.valueOf(informationString);
-
-            JSONParser parser = new JSONParser();
-            JSONObject jsonObject = (JSONObject) parser.parse(results);
-            JSONArray media_array = (JSONArray) jsonObject.get("results");
-
-            long s = (long) jsonObject.get("total_results");
-
-            if(s == 0){
-                System.out.println("Nothing Found");
-            }
-
-            else{
-                List <String> titles = new ArrayList<String>(); //contains name
-                List <String> overviews = new ArrayList<String>(); //contains overview
-                List <String> types = new ArrayList<String>(); //contains media type - tv or movie
-                List <String> posters = new ArrayList<String>(); //contains poster links
-                List <Long> ids = new ArrayList<Long>(); //contains tmdb id of the media item
-                List <Double> rating = new ArrayList<Double>(); //contains media item rating
-
-                for(int i = 0 ; i < s ; i++){
-                    JSONObject media_object = (JSONObject) media_array.get(i);
-                    types.add((String) media_object.get("media_type"));
-
-                    if(Objects.equals((String) media_object.get("media_type"), "tv")){
-                        titles.add((String) media_object.get("name"));
-                    } else {
-                        titles.add((String) media_object.get("title"));
-                    }
-
-                    overviews.add((String) media_object.get("overview"));
-                    posters.add(poster_API_link + (String) media_object.get("poster_path"));
-                    ids.add((long) media_object.get("id"));
-                    rating.add((double) media_object.get("vote_average"));
+                while (scanner.hasNext()) {
+                    informationString.append(scanner.nextLine());
                 }
+                //Close the scanner
+                scanner.close();
+
+                String results = String.valueOf(informationString);
+
+                JSONParser parser = new JSONParser();
+                JSONObject jsonObject = (JSONObject) parser.parse(results);
+                JSONArray media_array = (JSONArray) jsonObject.get("results");
+
+                int s = media_array.size();
+
+                if(s == 0){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Invalid Entry");
+                    alert.setHeaderText("Nothing Found!");
+                    alert.setContentText("No Movie Titles or Television Shows found!");
+                    alert.showAndWait();
+                }
+
+                else{
+                    List <String> titles = new ArrayList<String>(); //contains name
+                    List <String> overviews = new ArrayList<String>(); //contains overview
+                    List <String> types = new ArrayList<String>(); //contains media type - tv or movie
+                    List <String> posters = new ArrayList<String>(); //contains poster links
+                    List <Long> ids = new ArrayList<Long>(); //contains tmdb id of the media item
+                    List <Double> rating = new ArrayList<Double>(); //contains media item rating
+
+                    for(int i = 0 ; i < s ; i++){
+                        JSONObject media_object = (JSONObject) media_array.get(i);
+                        if(media_object.get("media_type").equals("tv") || media_object.get("media_type").equals("movie"))
+                        {
+                            types.add((String) media_object.get("media_type"));
+
+                            if (Objects.equals((String) media_object.get("media_type"), "tv")) {
+                                titles.add((String) media_object.get("name"));
+                            } else {
+                                titles.add((String) media_object.get("title"));
+                            }
+
+                            overviews.add((String) media_object.get("overview"));
+                            posters.add(poster_API_link + (String) media_object.get("poster_path"));
+                            ids.add((long) media_object.get("id"));
+                            rating.add((double) (media_object.get("vote_average")));
+                        }
+                        else {
+                            continue;
+                        }
+                    }
+                }
+
+
             }
-
-
         }
     }
 }
