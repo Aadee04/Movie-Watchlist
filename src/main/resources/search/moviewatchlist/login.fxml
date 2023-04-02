@@ -20,31 +20,6 @@
 
 <StackPane fx:id="stackMain" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="search.moviewatchlist.MainController">
    <children>
-      <SplitPane fx:id="searchResultPane" dividerPositions="0.6831103678929766" prefHeight="160.0" prefWidth="200.0">
-        <items>
-          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="429.0" prefWidth="434.0">
-               <children>
-                  <ListView fx:id="movieList" fixedCellSize="120.0" layoutX="-16.0" layoutY="91.0" prefHeight="707.0" prefWidth="884.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="91.0" />
-                  <Button fx:id="resultsSearchButton" layoutX="658.0" layoutY="26.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="103.0" text="SEARCH">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Button>
-                  <TextField fx:id="resultsSearch" layoutX="53.0" layoutY="31.0" prefHeight="26.0" prefWidth="560.0" />
-               </children>
-            </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
-               <children>
-                  <ListView fx:id="watchlist" fixedCellSize="80.0" layoutX="-61.0" layoutY="27.0" prefHeight="708.0" prefWidth="413.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0" />
-                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-4.0" prefHeight="92.0" prefWidth="401.0" text="Your Watchlist" textAlignment="CENTER" AnchorPane.bottomAnchor="706.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                     <font>
-                        <Font name="Rockwell" size="24.0" />
-                     </font>
-                  </Label>
-               </children>
-            </AnchorPane>
-        </items>
-      </SplitPane>
       <BorderPane fx:id="signUpPane" layoutX="7.0" layoutY="7.0" prefHeight="809.0" prefWidth="1261.0">
          <left>
             <VBox alignment="CENTER" prefHeight="809.0" prefWidth="694.0" spacing="60.0" style="-fx-background-color: #0D47A1;" BorderPane.alignment="CENTER">
@@ -192,5 +167,33 @@
             </ImageView>
          </left>
       </BorderPane>
+      <SplitPane fx:id="searchResultPane" dividerPositions="0.6831103678929766" prefHeight="160.0" prefWidth="200.0">
+        <items>
+          <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="429.0" prefWidth="434.0">
+               <children>
+                  <ListView fx:id="movieList" fixedCellSize="120.0" layoutX="-16.0" layoutY="91.0" prefHeight="707.0" prefWidth="884.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="91.0" />
+                  <Button fx:id="resultsSearchButton" layoutX="658.0" layoutY="26.0" mnemonicParsing="false" onAction="#testing" prefHeight="39.0" prefWidth="103.0" text="SEARCH">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Button>
+                  <TextField fx:id="resultsSearch" layoutX="60.0" layoutY="26.0" prefHeight="39.0" prefWidth="580.0" promptText="Enter a Movie or Television Show">
+                     <font>
+                        <Font size="18.0" />
+                     </font></TextField>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <ListView fx:id="watchlist" fixedCellSize="80.0" layoutX="-61.0" layoutY="27.0" prefHeight="708.0" prefWidth="413.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="90.0" />
+                  <Label alignment="CENTER" contentDisplay="CENTER" layoutX="-4.0" prefHeight="92.0" prefWidth="401.0" text="Your Watchlist" textAlignment="CENTER" AnchorPane.bottomAnchor="706.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <font>
+                        <Font name="Rockwell" size="24.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
    </children>
 </StackPane>
