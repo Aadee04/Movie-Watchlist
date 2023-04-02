@@ -2,14 +2,23 @@ package search.moviewatchlist;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+
 //API
 import java.io.IOException;
 import java.net.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.*;
+
 //JSON PARSING
+import javafx.scene.layout.VBox;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -29,7 +38,7 @@ public class MainController {
     private Button resultsSearchButton;
 
     @FXML
-    private SplitPane searchResultPane;
+    private GridPane searchResultPane;
 
     @FXML
     private Button signUpButton;
@@ -44,13 +53,88 @@ public class MainController {
     private StackPane stackMain;
 
     @FXML
-    private ListView<String> watchlist;
+    private VBox movieList = null;
+
+    //For database validation
+    @FXML
+    private Label leftblankerror;
+
 
     @FXML
-    private ListView<String> movieList;
+    private TextField username;
 
-    private String search_API_link = "https://api.themoviedb.org/3/search/multi?api_key=60861577c310df46ea9a16c2bcd51716&language=en-US&query=search_query&page=1&include_adult=false";
-    private String poster_API_link = "http://image.tmdb.org/t/p/w92/";
+    @FXML
+    private TextField password;
+
+    @FXML
+    private TextField email;
+
+    @FXML
+    private TextField confirmpassword;
+
+    //For sign in
+    @FXML
+    private TextField userid;
+
+    @FXML
+    private TextField passid;
+
+    @FXML
+    private Label validationlabel;
+
+    int flag = 0;
+
+
+
+    private final String search_API_link = "https://api.themoviedb.org/3/search/multi?api_key=60861577c310df46ea9a16c2bcd51716&language=en-US&query=search_query&page=1&include_adult=false";
+    private final String poster_API_link = "http://image.tmdb.org/t/p/w92/";
+
+    private String currentUser;
+    //sign in button click function
+    @FXML
+    public void signIn(ActionEvent event) {
+
+        if ((userid.getText().isBlank() == false) && (passid.getText().isBlank() == false)){
+            validateLogin();
+            if (flag == 1){
+                currentUser = userid.getText();
+                stackMain.getChildren().clear();
+                stackMain.getChildren().add(searchResultPane);
+            }
+            else {
+                validationlabel.setText("Enter correct details!");
+            }
+        }
+        else {
+            validationlabel.setText("Enter username and password!");
+        }
+    }
+
+    //for validating sign in
+    public void validateLogin(){
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        String verifyLogin = "SELECT count(1) FROM user_info WHERE Userdb = '" + userid.getText() + "' AND Passdb = '" + passid.getText() + "'";
+
+        try{
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(verifyLogin);
+
+            while(queryResult.next()) {
+                if (queryResult.getInt(1) == 1){
+                    flag = 1;
+                }
+                else {
+                    break;
+                }
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
     @FXML
     public void showSignUp(ActionEvent event) {
         stackMain.getChildren().clear();
@@ -58,23 +142,72 @@ public class MainController {
     }
 
     @FXML
-    public void showLogin(ActionEvent event) {
+    public void initialize() {
         stackMain.getChildren().clear();
         stackMain.getChildren().add(loginPane);
     }
 
     @FXML
     public void showSearchResult(ActionEvent event) {
-        stackMain.getChildren().clear();
-        stackMain.getChildren().add(searchResultPane);
+
+        if ((username.getText().isBlank() == false) && (password.getText().isBlank() == false) && (email.getText().isBlank() == false)){
+            if(confirmpassword.getText().equals(password.getText())){
+                storeData();
+                stackMain.getChildren().clear();
+                stackMain.getChildren().add(loginPane);
+            }
+            else{
+                leftblankerror.setText("Password is not the Same!");
+            }
+        }
+        else {
+            leftblankerror.setText("Enter Details");
+        }
+    }
+
+    //For storing data when sign up is clicked
+    public void storeData() {
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        String userName = username.getText();
+        String passWord = password.getText();
+
+        String insertData = "INSERT INTO user_info (Userdb, Passdb) " +
+                "VALUES ('" + userName + "', '" + passWord + "')";
+
+        try {
+            Statement statement = connectDB.createStatement();
+            int rowsInserted = statement.executeUpdate(insertData);
+
+            if (rowsInserted > 0) {
+                System.out.println("Data inserted successfully!");
+            } else {
+                System.out.println("Failed to insert data");
+            }
+
+            statement.close();
+            connectDB.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public void testing() throws IOException, ParseException {
         String searchBarText = (resultsSearch.getText()).trim();
 
-        searchBarText = searchBarText.replace(" ","%20");
+        if( searchBarText.isEmpty() ){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Invalid Entry");
+            alert.setHeaderText ("Search for Something!");
+            alert.setContentText ("Enter a Movie Title or Television Show Name in the search box");
+            alert.showAndWait();
+            return;
+        }
 
-        String search_link = search_API_link.replace("search_query",searchBarText);
+        searchBarText = searchBarText.replace(" ", "%20");
+
+        String search_link = search_API_link.replace("search_query", searchBarText);
 
         URL url = new URL(search_link);
 
@@ -86,7 +219,8 @@ public class MainController {
 
         if (responseCode != 200) {
             System.out.println("Error");
-        } else {
+        }
+        else {
             StringBuilder informationString = new StringBuilder();
             Scanner scanner = new Scanner(url.openStream());
 
@@ -102,38 +236,60 @@ public class MainController {
             JSONObject jsonObject = (JSONObject) parser.parse(results);
             JSONArray media_array = (JSONArray) jsonObject.get("results");
 
-            long s = (long) jsonObject.get("total_results");
+            int s = media_array.size();
 
-            if(s == 0){
-                System.out.println("Nothing Found");
+            if (s == 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Invalid Entry");
+                alert.setHeaderText("Nothing Found!");
+                alert.setContentText("No Movie Titles or Television Shows found!");
+                alert.showAndWait();
             }
+            else {
+                List<String> titles = new ArrayList<>(); //contains name
+                List<String> overviews = new ArrayList<>(); //contains overview
+                List<String> types = new ArrayList<>(); //contains media type - tv or movie
+                List<String> posters = new ArrayList<>(); //contains poster links
+                List<Long> ids = new ArrayList<>(); //contains imdb id of the media item
+                List<Double> rating = new ArrayList<>(); //contains media item rating
 
-            else{
-                List <String> titles = new ArrayList<String>(); //contains name
-                List <String> overviews = new ArrayList<String>(); //contains overview
-                List <String> types = new ArrayList<String>(); //contains media type - tv or movie
-                List <String> posters = new ArrayList<String>(); //contains poster links
-                List <Long> ids = new ArrayList<Long>(); //contains tmdb id of the media item
-                List <Double> rating = new ArrayList<Double>(); //contains media item rating
+                Node[] movieItems = new Node[s];
 
-                for(int i = 0 ; i < s ; i++){
+                movieList.getChildren().clear();
+                for (int i = 0; i < s; i++) {
                     JSONObject media_object = (JSONObject) media_array.get(i);
-                    types.add((String) media_object.get("media_type"));
+                    if (media_object.get("media_type").equals("tv") || media_object.get("media_type").equals("movie")) {
 
-                    if(Objects.equals((String) media_object.get("media_type"), "tv")){
-                        titles.add((String) media_object.get("name"));
-                    } else {
-                        titles.add((String) media_object.get("title"));
+
+
+                        types.add((String) media_object.get("media_type"));
+
+                        if (Objects.equals((String) media_object.get("media_type"), "tv")) {
+                            titles.add((String) media_object.get("name"));
+                        } else {
+                            titles.add((String) media_object.get("title"));
+                        }
+
+
+                        overviews.add((String) media_object.get("overview"));
+                        posters.add(poster_API_link + (String) media_object.get("poster_path"));
+                        ids.add((long) media_object.get("id"));
+                        rating.add((double) (media_object.get("vote_average")));
+
+
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("movieListItem.fxml"));
+                        movieItems[i] = loader.load();
+                        movieItemController controller = loader.getController();
+                        controller.setMovieInfo(titles.get(i), overviews.get(i), rating.get(i), posters.get(i), ids.get(i));
+                        if(i%2 == 1)
+                            movieItems[i].setStyle("-fx-background-color: #1565C0");
+
+                        movieList.getChildren().add(movieItems[i]);
                     }
-
-                    overviews.add((String) media_object.get("overview"));
-                    posters.add(poster_API_link + (String) media_object.get("poster_path"));
-                    ids.add((long) media_object.get("id"));
-                    rating.add((double) media_object.get("vote_average"));
                 }
+
+
             }
-
-
         }
     }
 }
