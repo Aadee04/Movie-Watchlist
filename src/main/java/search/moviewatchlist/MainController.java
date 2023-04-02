@@ -46,11 +46,11 @@ public class MainController {
         stackMain.getChildren().add(signUpPane);
     }
 
-    @FXML
-    public void showLogin(ActionEvent event) {
-        stackMain.getChildren().clear();
-        stackMain.getChildren().add(loginPane);
-    }
+//    @FXML
+//    public void initialize() {
+//        stackMain.getChildren().clear();
+//        stackMain.getChildren().add(loginPane);
+//    }
 
     @FXML
     public void showSearchResult(ActionEvent event) {
