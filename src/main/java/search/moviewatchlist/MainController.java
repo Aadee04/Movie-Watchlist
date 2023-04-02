@@ -1,6 +1,7 @@
 package search.moviewatchlist;
 
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
@@ -14,6 +15,9 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.ResultSet;
 
 public class MainController {
     @FXML
@@ -49,6 +53,130 @@ public class MainController {
     @FXML
     private ListView<String> movieList;
 
+    //For database validation
+    @FXML
+    private Label leftblankerror;
+
+
+    @FXML
+    private TextField username;
+
+    @FXML
+    private TextField password;
+
+    @FXML
+    private TextField email;
+
+    @FXML
+    private TextField confirmpassword;
+
+    //For sign in
+    @FXML
+    private TextField userid;
+
+    @FXML
+    private TextField passid;
+
+    @FXML
+    private Label validationlabel;
+
+    int flag = 0;
+
+
+    //sign in button click function
+    @FXML
+    public void signIn(ActionEvent event) {
+
+        if ((userid.getText().isBlank() == false) || (passid.getText().isBlank() == false)){
+            validateLogin();
+            if (flag == 1){
+                stackMain.getChildren().clear();
+                stackMain.getChildren().add(searchResultPane);
+            }
+            else {
+                validationlabel.setText("Enter correct details!");
+            }
+        }
+        else {
+            validationlabel.setText("Enter username and password!");
+        }
+    }
+
+
+    //for validating sign in
+    public void validateLogin(){
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        String verifyLogin = "SELECT count(1) FROM user_info WHERE Userdb = '" + userid.getText() + "' AND Passdb = '" + passid.getText() + "'";
+
+        try{
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(verifyLogin);
+
+            while(queryResult.next()) {
+                if (queryResult.getInt(1) == 1){
+                    flag = 1;
+                }
+                else {
+                    break;
+                }
+            }
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
+
+
+    //sign up button click function
+    @FXML
+    public void showSearchResult(ActionEvent event) {
+
+        if ((username.getText().isBlank() == false) || (password.getText().isBlank() == false) || (email.getText().isBlank() == false) || (confirmpassword.getText().isBlank() == false)){
+
+                storeData();
+                stackMain.getChildren().clear();
+                stackMain.getChildren().add(searchResultPane);
+        }
+        else {
+            leftblankerror.setText("Enter username and password!");
+        }
+    }
+
+
+    //For storing data when sign up is clicked
+    public void storeData() {
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        String userName = username.getText();
+        String passWord = password.getText();
+
+        String insertData = "INSERT INTO user_info (Userdb, Passdb) " +
+                "VALUES ('" + userName + "', '" + passWord + "')";
+
+        try {
+            Statement statement = connectDB.createStatement();
+            int rowsInserted = statement.executeUpdate(insertData);
+
+            if (rowsInserted > 0) {
+                System.out.println("Data inserted successfully!");
+            } else {
+                System.out.println("Failed to insert data");
+            }
+
+            statement.close();
+            connectDB.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
     private String search_API_link = "https://api.themoviedb.org/3/search/multi?api_key=60861577c310df46ea9a16c2bcd51716&language=en-US&query=search_query&page=1&include_adult=false";
     private String poster_API_link = "http://image.tmdb.org/t/p/w92/";
     @FXML
@@ -59,18 +187,17 @@ public class MainController {
 
     @FXML
     public void showLogin(ActionEvent event) {
+
         stackMain.getChildren().clear();
         stackMain.getChildren().add(loginPane);
     }
 
-    @FXML
-    public void showSearchResult(ActionEvent event) {
-        stackMain.getChildren().clear();
-        stackMain.getChildren().add(searchResultPane);
-    }
+
 
     public void testing() throws IOException, ParseException {
         String searchBarText = (resultsSearch.getText()).trim();
+
+
 
         searchBarText = searchBarText.replace(" ","%20");
 
