@@ -90,23 +90,28 @@ public class MainController {
     private final String poster_API_link = "http://image.tmdb.org/t/p/w92/";
 
     private String currentUser;
+
     //sign in button click function
     @FXML
-    public void signIn(ActionEvent event) {
+    public void signIn() {
 
-        if ((userid.getText().isBlank() == false) && (passid.getText().isBlank() == false)){
+        if ((!userid.getText().isBlank()) && (!passid.getText().isBlank())){
             validateLogin();
             if (flag == 1){
+                validationlabel.setStyle("-fx-background-color: TRANSPARENT");
+                validationlabel.setText("");
                 currentUser = userid.getText();
                 stackMain.getChildren().clear();
                 stackMain.getChildren().add(searchResultPane);
             }
             else {
-                validationlabel.setText("Enter correct details!");
+                validationlabel.setText("Enter Correct Details!");
+                validationlabel.setStyle("-fx-background-color: #2962FF");
             }
         }
         else {
-            validationlabel.setText("Enter username and password!");
+            validationlabel.setText("Enter Username and Password!");
+            validationlabel.setStyle("-fx-background-color: #2962FF");
         }
     }
 
@@ -136,7 +141,17 @@ public class MainController {
 
     }
     @FXML
-    public void showSignUp(ActionEvent event) {
+    public void showSignUp() {
+
+        // reset the error label
+        leftblankerror.setStyle("-fx-background-color: TRANSPARENT");
+        leftblankerror.setText("");
+        username.clear();
+        email.clear();
+        password.clear();
+        confirmpassword.clear();
+
+
         stackMain.getChildren().clear();
         stackMain.getChildren().add(signUpPane);
     }
@@ -148,20 +163,29 @@ public class MainController {
     }
 
     @FXML
-    public void showSearchResult(ActionEvent event) {
+    public void showSearchResult() {
 
-        if ((username.getText().isBlank() == false) && (password.getText().isBlank() == false) && (email.getText().isBlank() == false)){
+        if ((!username.getText().isBlank()) && (!password.getText().isBlank()) && (!email.getText().isBlank())){
             if(confirmpassword.getText().equals(password.getText())){
                 storeData();
+
+                // reset the error label
+                validationlabel.setStyle("-fx-background-color: TRANSPARENT");
+                validationlabel.setText("");
+                userid.clear();
+                passid.clear();
+
                 stackMain.getChildren().clear();
                 stackMain.getChildren().add(loginPane);
             }
             else{
-                leftblankerror.setText("Password is not the Same!");
+                leftblankerror.setText("Password Must be the Same!");
+                leftblankerror.setStyle("-fx-background-color: #2962FF");
             }
         }
         else {
-            leftblankerror.setText("Enter Details");
+            leftblankerror.setText("All Fields must be filled!");
+            leftblankerror.setStyle("-fx-background-color: #2962FF");
         }
     }
 
