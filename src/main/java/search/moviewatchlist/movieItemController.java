@@ -26,7 +26,7 @@ public class movieItemController {
     @FXML
     private Label movieTitle;
     long ID;
-    private final File file = new File("/Users/aadee/Desktop/NMIMS FILES/SEM VI/JP/Movie-Watchlist/src/main/resources/images/no-movie-poster.jpeg");
+    private final File file = new File("src/main/resources/images/no-movie-poster.jpeg");
     private final Image image = new Image(file.toURI().toString());
 
     public void setMovieInfo(String Title, String Desc, double Rating, String imageURL, long ID)
