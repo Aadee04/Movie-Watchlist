@@ -13,10 +13,6 @@
     -fx-padding: 5px;
 }
 
-.scrollable-label {
-    -fx-overflow-x: scroll;
-    -fx-overflow-y: hidden;
-}
 
 /* Hide vertical scrollbar */
 .scroll-pane .scroll-bar:vertical {
