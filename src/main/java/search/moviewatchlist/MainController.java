@@ -82,6 +82,9 @@ public class MainController {
     @FXML
     private Label validationlabel;
 
+    @FXML
+            private ListView watchlist;
+
     int flag = 0;
 
 
@@ -159,27 +162,33 @@ public class MainController {
     @FXML
     public void initialize() {
         stackMain.getChildren().clear();
-        stackMain.getChildren().add(searchResultPane);
+        stackMain.getChildren().add(loginPane);
     }
 
     @FXML
     public void showSearchResult() {
 
         if ((!username.getText().isBlank()) && (!password.getText().isBlank()) && (!email.getText().isBlank())){
-            if(confirmpassword.getText().equals(password.getText())){
-                storeData();
+            if (email.getText().contains("@")){
+                if(confirmpassword.getText().equals(password.getText())){
+                    storeData();
 
-                // reset the error label
-                validationlabel.setStyle("-fx-background-color: TRANSPARENT");
-                validationlabel.setText("");
-                userid.clear();
-                passid.clear();
+                    // reset the error label
+                    validationlabel.setStyle("-fx-background-color: TRANSPARENT");
+                    validationlabel.setText("");
+                    userid.clear();
+                    passid.clear();
 
-                stackMain.getChildren().clear();
-                stackMain.getChildren().add(loginPane);
+                    stackMain.getChildren().clear();
+                    stackMain.getChildren().add(loginPane);
+                }
+                else{
+                    leftblankerror.setText("Password Must be the Same!");
+                    leftblankerror.setStyle("-fx-background-color: #2962FF");
+                }
             }
-            else{
-                leftblankerror.setText("Password Must be the Same!");
+            else {
+                leftblankerror.setText("Email is invalid.");
                 leftblankerror.setStyle("-fx-background-color: #2962FF");
             }
         }
@@ -312,7 +321,7 @@ public class MainController {
                         movieItems[j] = loader.load();
 
                         movieItemController controller = loader.getController();
-                        controller.setMovieInfo(titles.get(j), overviews.get(j), rating.get(j), posters.get(j), ids.get(j));
+                        controller.setMovieInfo(titles.get(j), overviews.get(j), rating.get(j), posters.get(j), ids.get(j), currentUser);
                         if(j%2 == 1)
                             movieItems[j].setStyle("-fx-background-color: #1565C0");
 
@@ -325,4 +334,6 @@ public class MainController {
             }
         }
     }
+
+
 }

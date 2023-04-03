@@ -53,7 +53,7 @@
                   </Label>
                </content>
             </ScrollPane>
-            <Button fx:id="movieAddButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="75.0" style="-fx-background-radius: 15;" text="Add" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
+            <Button fx:id="movieAddButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#AddMovie" prefHeight="26.0" prefWidth="75.0" style="-fx-background-radius: 15;" text="Add" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="RIGHT" GridPane.rowIndex="3" GridPane.valignment="CENTER">
                <GridPane.margin>
                   <Insets right="40.0" />
                </GridPane.margin>
