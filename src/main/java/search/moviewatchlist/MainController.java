@@ -159,7 +159,7 @@ public class MainController {
     @FXML
     public void initialize() {
         stackMain.getChildren().clear();
-        stackMain.getChildren().add(loginPane);
+        stackMain.getChildren().add(searchResultPane);
     }
 
     @FXML
@@ -277,14 +277,21 @@ public class MainController {
                 List<Long> ids = new ArrayList<>(); //contains imdb id of the media item
                 List<Double> rating = new ArrayList<>(); //contains media item rating
 
-                Node[] movieItems = new Node[s];
+                int count = 0;
 
-                movieList.getChildren().clear();
                 for (int i = 0; i < s; i++) {
                     JSONObject media_object = (JSONObject) media_array.get(i);
                     if (media_object.get("media_type").equals("tv") || media_object.get("media_type").equals("movie")) {
+                        count++;
+                    }
+                }
 
+                Node[] movieItems = new Node[count];
 
+                movieList.getChildren().clear();
+                for (int i = 0, j = 0; i < s; i++) {
+                    JSONObject media_object = (JSONObject) media_array.get(i);
+                    if (media_object.get("media_type").equals("tv") || media_object.get("media_type").equals("movie")) {
 
                         types.add((String) media_object.get("media_type"));
 
@@ -302,13 +309,15 @@ public class MainController {
 
 
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("movieListItem.fxml"));
-                        movieItems[i] = loader.load();
-                        movieItemController controller = loader.getController();
-                        controller.setMovieInfo(titles.get(i), overviews.get(i), rating.get(i), posters.get(i), ids.get(i));
-                        if(i%2 == 1)
-                            movieItems[i].setStyle("-fx-background-color: #1565C0");
+                        movieItems[j] = loader.load();
 
-                        movieList.getChildren().add(movieItems[i]);
+                        movieItemController controller = loader.getController();
+                        controller.setMovieInfo(titles.get(j), overviews.get(j), rating.get(j), posters.get(j), ids.get(j));
+                        if(j%2 == 1)
+                            movieItems[j].setStyle("-fx-background-color: #1565C0");
+
+                        movieList.getChildren().add(movieItems[j]);
+                        j++;
                     }
                 }
 
