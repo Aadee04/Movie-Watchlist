@@ -88,7 +88,7 @@ public class movieItemController {
 
         String insertMovie = "";
 
-        Title = (Title.replace("'", "~"));
+        Title = (Title.replace("'", ""));
 
         if (cellValue == null){
             insertMovie = "UPDATE user_info SET ids = '" + Title + "' WHERE Userdb = '" + User + "'";

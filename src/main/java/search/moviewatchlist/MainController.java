@@ -382,7 +382,7 @@ public class MainController {
                 watchListItems[i] = loader.load();
                 watchListController controller = loader.getController();
 
-                controller.setItem(moviesArray[i].replace("~", "'"), currentUser);
+                controller.setItem(moviesArray[i], currentUser);
 
                 if(i%2 == 1)
                     watchListItems[i].setStyle("-fx-background-color: #1565C0");
