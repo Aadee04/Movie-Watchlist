@@ -38,7 +38,7 @@ public class movieItemController {
 
         DecimalFormat df = new DecimalFormat("#.#");
 
-        movieRating.setText("Rating: " + df.format(Rating) + "/10.0");
+        movieRating.setText("Rating: " + (df.format(Rating).equals("0") ? "None" : (df.format(Rating)) + "/10.0"));
 
         if(imageURL.endsWith("null"))
             movieImage.setImage(this.image);
