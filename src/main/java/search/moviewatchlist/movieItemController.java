@@ -88,6 +88,7 @@ public class movieItemController {
 
         String insertMovie = "";
 
+        Title = (Title.replace("'", "~"));
 
         if (cellValue == null){
             insertMovie = "UPDATE user_info SET ids = '" + Title + "' WHERE Userdb = '" + User + "'";
@@ -124,25 +125,6 @@ public class movieItemController {
     }
 
 
-//    public void storeData() {
-//        DatabaseConnection connectNow = new DatabaseConnection();
-//        Connection connectDB = connectNow.getConnection();
-//
-//        String retrieveWatchlist = "SELECT ids FROM user_info WHERE Userdb = '" + User + "'";
-//        String cellValue = "";
-//
-//        try {
-//            Statement statement = connectDB.createStatement();
-//            ResultSet queryResult = statement.executeQuery(retrieveWatchlist);
-//            if (queryResult.next()) {
-//                cellValue = queryResult.getString("ids");
-//            }
-//
-//            statement.close();
-//            queryResult.close();
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
+
+
 }

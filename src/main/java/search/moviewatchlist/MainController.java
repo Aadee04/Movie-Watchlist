@@ -83,7 +83,11 @@ public class MainController {
     private Label validationlabel;
 
     @FXML
-            private ListView watchlist;
+    private VBox watchList = null;
+
+    @FXML
+    private Button refresh;
+
 
     int flag = 0;
 
@@ -96,7 +100,7 @@ public class MainController {
 
     //sign in button click function
     @FXML
-    public void signIn() {
+    public void signIn() throws IOException {
 
         if ((!userid.getText().isBlank()) && (!passid.getText().isBlank())){
             validateLogin();
@@ -106,6 +110,7 @@ public class MainController {
                 currentUser = userid.getText();
                 stackMain.getChildren().clear();
                 stackMain.getChildren().add(searchResultPane);
+
             }
             else {
                 validationlabel.setText("Enter Correct Details!");
@@ -226,6 +231,8 @@ public class MainController {
         }
     }
 
+
+
     public void testing() throws IOException, ParseException {
         String searchBarText = (resultsSearch.getText()).trim();
 
@@ -334,6 +341,60 @@ public class MainController {
             }
         }
     }
+
+
+
+    public void WatchlistData() throws IOException {
+        DatabaseConnection connectNow = new DatabaseConnection();
+        Connection connectDB = connectNow.getConnection();
+
+        String retrieveWatchlist = "SELECT ids FROM user_info WHERE Userdb = '" + currentUser + "'";
+        String cellValue = "";
+
+        try {
+            Statement statement = connectDB.createStatement();
+            ResultSet queryResult = statement.executeQuery(retrieveWatchlist);
+            if (queryResult.next()) {
+                cellValue = queryResult.getString("ids");
+            }
+
+            statement.close();
+            queryResult.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (!(cellValue == null))
+        {
+            String[] moviesArray = cellValue.split(",");
+            Node[] watchListItems = new Node[moviesArray.length];
+
+
+
+            watchList.getChildren().clear();
+            for (int i = 0; i < moviesArray.length; i++){
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("watchListItem.fxml"));
+                watchListItems[i] = loader.load();
+                watchListController controller = loader.getController();
+
+                controller.setItem(moviesArray[i].replace("~", "'"), currentUser);
+
+                if(i%2 == 1)
+                    watchListItems[i].setStyle("-fx-background-color: #1565C0");
+
+                watchList.getChildren().add(watchListItems[i]);
+            }
+        }
+        else {
+            watchList.getChildren().clear();
+        }
+
+
+
+
+    }
+
 
 
 }
