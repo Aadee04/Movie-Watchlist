@@ -227,7 +227,11 @@ public class MainController {
             statement.close();
             connectDB.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Invalid Username");
+            alert.setHeaderText("Username Already Exists");
+            alert.setContentText("Please pick another username!");
+            alert.showAndWait();
         }
     }
 
